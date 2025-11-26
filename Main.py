@@ -27,4 +27,7 @@ print("Display Packages: ")
 for i in range(1,41):
     print("ID: " + i.__str__() + " - Status: " + ht.search(i).delStatus + " - Delivery Deadline: " + ht.search(i).delDeadline)
 
-
+# Interactable Interface
+# TODO: implement an interactable interface that takes user input of time ( 10:00 am ) and display the status of all 40 packages at that time
+# idea: convert user input into total minutes value ie 8:00 am = 480 minutes, store time when packages are loaded and delivered within the package object. Upon called the time
+# designated by the user we can compare the time with the two stored times to determine if a package was at "HUB", "En Route", or "Delivered" at the given time.
