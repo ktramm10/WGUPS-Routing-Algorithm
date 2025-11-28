@@ -1,11 +1,14 @@
+import math
+
 from Hash import HashTable
 from datetime import datetime
 
 class InteractiveUI:
     def __init__(self, hashTable : HashTable):
         self.hashTable : HashTable = hashTable
-        self.userInput : str = ""
+        self.isPM: bool = False
         self.stopListening : bool = False
+        self.minutes : float = 0.0
 
     def isInputValid(self, userInput):
         try:
@@ -17,17 +20,48 @@ class InteractiveUI:
     def listen(self):
         while not self.stopListening:
 
-            self.userInput = input("Input the time you would like to view your"
+            userInputTime = input("Input the time you would like to view your"
                                    " packages (format: xx:xx),\n"
                                    " if you don't wish to view the packages"
-                                   " type \"x\".")
-            if self.userInput == "x":
+                                   " type \"x\".\n")
+            if userInputTime == "x":
                 self.stopListening = True
-            elif self.isInputValid(self.userInput):
-                print("The valid time is " + self.userInput)
-            else:
-                print("Invalid input! Please try again.")
+            elif self.isInputValid(userInputTime):
+                userInputMeridiem = input("Input whether the time is \"AM\" or \"PM\".")
+                if userInputMeridiem.lower() == "am" or userInputMeridiem.lower() == "pm":
+                    if userInputMeridiem.lower() == "pm":
+                        self.isPM = True
+                    print("The valid time is " + userInputTime)
+                    self.minutes = self.convertTimeToMinutes(userInputTime)
+                    print("converted time to minutes: " + self.minutes.__str__())
+                    print("24hr clock time: " + self.get24HourClockTime())
+                else:
+                    print("Invalid input! Please try again.")
         print("Thank you for using WGUPS!")
 
     def convertTimeToMinutes(self, time : str):
-        pass
+        timeMinutes : float = 0
+        # is hours 1 or 2 digits?
+        if time.__len__() == 4 :
+            timeMinutes += int(time[0]) * 60
+            timeMinutes += int(time[2]) * 10 + int(time[3])
+        else:
+            timeMinutes += (int(time[0]) * 10) * 60 + int(time[1]) * 60
+            timeMinutes += (int(time[3]) * 10) + int(time[4])
+            # TODO: Fix 12 AM/PM edge case
+        if self.isPM:
+            if not timeMinutes == 720:
+                timeMinutes += 720
+        else:
+            if timeMinutes == 720:
+                timeMinutes += 720
+
+        return timeMinutes
+
+    def get24HourClockTime(self):
+        hours = math.floor(self.minutes / 60)
+        minutes = self.minutes % 60
+        if int(minutes).__str__().__len__() < 2:
+            return "" + int(hours).__str__() + ":0" + int(minutes).__str__()
+        else:
+            return "" + int(hours).__str__() + ":" + int(minutes).__str__()
