@@ -1,4 +1,5 @@
 # Keith Tramm WGUID: 012273798
+import Interactive
 import Object
 import Hash
 import Graph
@@ -27,7 +28,13 @@ print("Display Packages: ")
 for i in range(1,41):
     print("ID: " + i.__str__() + " - Status: " + ht.search(i).delStatus + " - Delivery Deadline: " + ht.search(i).delDeadline)
 
-# Interactable Interface
-# TODO: implement an interactable interface that takes user input of time ( 10:00 am ) and display the status of all 40 packages at that time
-# idea: convert user input into total minutes value ie 8:00 am = 480 minutes, store time when packages are loaded and delivered within the package object. Upon called the time
-# designated by the user we can compare the time with the two stored times to determine if a package was at "HUB", "En Route", or "Delivered" at the given time.
+# TODO: Implement Interactive UI that takes an input of a time ie.
+#  8:00 and displays all the packages status during the time designated.
+# idea: convert the user input into minutes (ie 8:00 am = 480 minutes), store
+# time loaded and time delivered within the packages object, and compare the
+# times to determine whether the object was at "hub", "en route" or "delivered"
+# at the given time.
+
+
+IUI = Interactive.InteractiveUI(ht)
+IUI.listen()
