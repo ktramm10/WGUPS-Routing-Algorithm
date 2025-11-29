@@ -12,7 +12,7 @@ class PackageNotOnTruck(Exception):
 class Package:
     def __init__(self, delLocationName : str , delAddress: str, delDeadline: str, delCity: str, delZip: str, weight: float,
                  delStatus: str, packageID : int, priorityRating = 0, timeDelivered : str = "",
-                 timeDelMinutes : float = 0, timeLoadedMinutes : float = 0):
+                 timeDelMinutes : float = -1, timeLoadedMinutes : float = -1, truckNumber : str = "Null"):
         self.delLocationName = delLocationName
         self.delAddress = delAddress
         self.delDeadline = delDeadline
@@ -26,6 +26,7 @@ class Package:
         self.priorityRating = priorityRating
         self.timeDelMinutes = timeDelMinutes
         self.timeLoadedMinutes = timeLoadedMinutes
+        self.truckNumber : str = truckNumber
 
     def __str__(self):
         return  ("Address: " + self.delAddress + " Deadline: " +
@@ -57,6 +58,7 @@ class Truck:
             if package.delStatus != "En Route":
                 if self.packages.__len__() < 16:
                     package.delStatus = "En Route"
+                    package.truckNumber = self.truckID.__str__()
                     print("Package Loaded - Package ID: " + package.packageID.__str__() + " | Package Status: " + package.delStatus + " | Time Loaded: " +
                           self.get24HourClockTime() + " Onto : Truck #" + self.truckID.__str__())
                     self.packages.append(package)

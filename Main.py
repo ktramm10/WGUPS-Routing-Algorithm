@@ -28,13 +28,6 @@ print("Display Packages: ")
 for i in range(1,41):
     print("ID: " + i.__str__() + " - Status: " + ht.search(i).delStatus + " - Delivery Deadline: " + ht.search(i).delDeadline)
 
-# TODO: Implement Interactive UI that takes an input of a time ie.
-#  8:00 and displays all the packages status during the time designated.
-# idea: convert the user input into minutes (ie 8:00 am = 480 minutes), store
-# time loaded and time delivered within the packages object, and compare the
-# times to determine whether the object was at "hub", "en route" or "delivered"
-# at the given time.
-
-
+# Prompt user to input a time and display the status of all packages at the given time
 IUI = Interactive.InteractiveUI(ht)
 IUI.listen()
