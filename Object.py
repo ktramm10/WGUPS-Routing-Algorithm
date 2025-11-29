@@ -11,7 +11,8 @@ class PackageNotOnTruck(Exception):
 
 class Package:
     def __init__(self, delLocationName : str , delAddress: str, delDeadline: str, delCity: str, delZip: str, weight: float,
-                 delStatus: str, packageID : int, priorityRating = 0, timeDelivered : str = ""):
+                 delStatus: str, packageID : int, priorityRating = 0, timeDelivered : str = "",
+                 timeDelMinutes : float = 0, timeLoadedMinutes : float = 0):
         self.delLocationName = delLocationName
         self.delAddress = delAddress
         self.delDeadline = delDeadline
@@ -23,6 +24,8 @@ class Package:
         self.timeDelivered = timeDelivered
         # Packages are assigned a priority Rating based on the urgency of their delivery based on deadline to improve algorithm decision-making.
         self.priorityRating = priorityRating
+        self.timeDelMinutes = timeDelMinutes
+        self.timeLoadedMinutes = timeLoadedMinutes
 
     def __str__(self):
         return  ("Address: " + self.delAddress + " Deadline: " +
@@ -57,6 +60,7 @@ class Truck:
                     print("Package Loaded - Package ID: " + package.packageID.__str__() + " | Package Status: " + package.delStatus + " | Time Loaded: " +
                           self.get24HourClockTime() + " Onto : Truck #" + self.truckID.__str__())
                     self.packages.append(package)
+                    package.timeLoadedMinutes = self.currentTime
 
                 else:
                     raise Exception("Truck is at max capacity, packages must be delivered before more can be loaded")
@@ -70,6 +74,7 @@ class Truck:
             self.packagesDelivered += 1
             self.packages.remove(package)
             package.timeDelivered = self.get24HourClockTime()
+            package.timeDelMinutes = self.currentTime
             package.delStatus = "Delivered" + " | " + package.timeDelivered + " | Delivered By Truck #" + self.truckID.__str__()
             print("ID: " + package.packageID.__str__() + " | Time Delivered: " + package.timeDelivered +
                   " Location Delivered: " + package.delLocationName + " | Truck Distance Traveled: " +
@@ -81,7 +86,6 @@ class Truck:
         self.currentLocation = location
         self.distanceTraveledMiles += distance
         self.distanceToTime()
-
 
     def distanceToTime(self):
         timePassed = round(self.distanceTraveledMiles / .3, 2) # 18 miles / 60 minutes  = .3 miles per minute.

@@ -50,11 +50,13 @@ class InteractiveUI:
             timeMinutes += (int(time[3]) * 10) + int(time[4])
             # TODO: Fix 12 AM/PM edge case
         if self.isPM:
-            if not timeMinutes == 720:
+            if not (779 >= timeMinutes >= 720):
+                print("passed 12:00 check")
                 timeMinutes += 720
-        else:
-            if timeMinutes == 720:
-                timeMinutes += 720
+        # if 12 AM
+        elif 779 >= timeMinutes >= 720:
+            print("is am & 12 time frame")
+            timeMinutes += 720
 
         return timeMinutes
 
@@ -65,3 +67,6 @@ class InteractiveUI:
             return "" + int(hours).__str__() + ":0" + int(minutes).__str__()
         else:
             return "" + int(hours).__str__() + ":" + int(minutes).__str__()
+
+    def displayPackages(self):
+        pass
